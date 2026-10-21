@@ -1,0 +1,60 @@
+{
+ "set": "블랙라벨 빈칸추론 Day1 · 01 단어&짧은 구 · STEP A 1등급 도전문제",
+ "use": "최상위 모듈(M-3 판정) 후보 — 변형 후 사용 권장(저작권)",
+ "items": [
+  {
+   "no": 1,
+   "type": "빈칸(낱말)",
+   "answer": "③"
+  },
+  {
+   "no": 2,
+   "type": "빈칸(낱말)",
+   "answer": "③"
+  },
+  {
+   "no": 3,
+   "type": "빈칸(낱말)",
+   "answer": "②"
+  },
+  {
+   "no": 4,
+   "type": "빈칸(낱말)",
+   "answer": "③"
+  },
+  {
+   "no": 5,
+   "type": "서술형",
+   "answer": "produced so much data"
+  },
+  {
+   "no": 6,
+   "type": "빈칸(구)",
+   "answer": "①"
+  },
+  {
+   "no": 7,
+   "type": "빈칸(구)",
+   "answer": "②"
+  },
+  {
+   "no": 8,
+   "type": "빈칸(구)",
+   "answer": "②"
+  },
+  {
+   "no": 9,
+   "type": "빈칸(구)",
+   "answer": "①"
+  },
+  {
+   "no": 10,
+   "type": "서술형",
+   "answer": "(A) smoke (B) fire"
+  }
+ ],
+ "source": [
+  "source/high_items/블랙라벨_빈칸추론_Day1_문제.pdf",
+  "source/high_items/블랙라벨_빈칸추론_Day1_정답해설.pdf"
+ ]
+}

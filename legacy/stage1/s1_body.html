@@ -1,0 +1,69 @@
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">BRYAN CHU EDUCATION · 초·중등부</div>
+      <h1>1단계 레벨테스트 채점·상담</h1>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-grade" aria-selected="true">채점·리포트</button>
+      <button class="tab" role="tab" id="tab-map" aria-selected="false">정답·문항표</button>
+    </div>
+  </header>
+
+  <section id="view-grade" class="grid">
+    <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+      <div class="card">
+        <div class="phead"><h2>학생 정보</h2><span id="sampleTag" class="sample">예시 학생 데이터</span></div>
+        <div class="info">
+          <label for="sName">이름<input type="text" id="sName"></label>
+          <label for="sSchool">학교 / 학년<input type="text" id="sSchool"></label>
+          <label for="sDate">응시일<input type="date" id="sDate"></label>
+        </div>
+        <div class="tools">
+          <button class="btn" id="btnAllO">정답 일괄 O</button>
+          <button class="btn" id="btnReset">새 학생 (초기화)</button>
+          <button class="btn" id="btnSample">예시 다시 불러오기</button>
+          <span class="hint">문항을 누르면 미채점 → O → X 순서로 바뀝니다. 칸 아래 작은 글씨가 정답입니다.</span>
+        </div>
+      </div>
+      <div id="parts" style="display:flex;flex-direction:column;gap:16px"></div>
+    </div>
+
+    <aside class="card report" aria-live="polite">
+      <div class="phead"><h2 id="rTitle">상담 리포트</h2><span class="hint" id="rMeta"></span></div>
+      <div class="total"><span class="n" id="tot">0</span><span id="totMax">/ 100점</span><span class="hint" id="tNote"></span></div>
+      <div class="bars" id="bars"></div>
+      <div class="tablebox"><table>
+        <thead><tr><th>영역</th><th>추천 단계</th><th>연결 교재</th><th>난이도 (범위 · 추정)</th></tr></thead>
+        <tbody id="recs"></tbody>
+      </table></div>
+      <div id="next" class="m3"></div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div class="phead"><h2>상담 코멘트</h2><button class="btn dark" id="btnCopy">코멘트 복사</button></div>
+        <div class="comment" id="comment"></div>
+      </div>
+      <div class="exp">
+        <button class="btn dark" id="exPdf">PDF 저장 (A4)</button>
+        <button class="btn" id="exPng">PNG 저장 (9:16)</button>
+        <button class="btn" id="exCopy">이미지 복사</button>
+        <span class="hint" id="exMsg">PNG는 휴대폰 화면(1080×1920), PDF는 A4 한 장으로 저장됩니다.</span>
+      </div>
+    </aside>
+  </section>
+
+  <section id="view-map" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <h2>배점과 판정 기준</h2>
+      <div class="mapgrid">
+        <div><b>듣기 17문항 · 20점</b><div class="hint">일반 1점, [3점] 표시 문항(9·13·15번) 2점. 듣기를 안 보면 나머지 80점을 100점으로 환산합니다.</div></div>
+        <div><b>문법 10문항 · 20점</b><div class="hint">하 21~25, 중 26~28, 상 29~30. 문항당 2점.</div></div>
+        <div><b>독해 20문항 · 40점</b><div class="hint">하 31~40, 중 41~47, 상 48~50. 문항당 2점.</div></div>
+        <div><b>서술형 10문항 · 10점</b><div class="hint">하 51~55, 중 56~58, 상 59~60. 문항당 1점.</div></div>
+        <div><b>구문 5문장 · 10점</b><div class="hint">문장마다 해석 1점 + 구문 표시 1점 (해석·구문 문제지 채점란과 같음).</div></div>
+      </div>
+      <div class="hint">배치: 영역 정답률 70% 이상이면 STEP 2 교재, 미만이면 STEP 1 교재. 총점 80점 이상이면서 상 문항 절반 이상이면 2단계 테스트를 권합니다.</div>
+    </div>
+    <div class="card"><h2>문법·독해·서술형 정답</h2><div class="tablebox"><table><thead><tr><th>번호</th><th>영역</th><th>난도</th><th>정답</th><th>포인트</th></tr></thead><tbody id="mapK"></tbody></table></div></div>
+    <div class="card"><h2>구문 모범 답안</h2><div class="tablebox"><table><thead><tr><th>번호</th><th>구문</th><th>해석</th></tr></thead><tbody id="mapS"></tbody></table></div></div>
+  </section>
+</div>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>브추교육학원 레벨테스트 결과</title>
+<meta property="og:title" content="브추교육학원 레벨테스트 결과">
+<meta property="og:description" content="자녀의 레벨테스트 결과 리포트입니다.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700;900&display=swap">
+<style>
+:root{--bg:#F3EBDA;--ink:#3E2A1E;--mut:#7A5E48;--wal:#8A5A36}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif}
+main{min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px max(12px,env(safe-area-inset-left,0px)) 40px}
+#card{width:360px;max-width:100%;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(62,42,30,.15);background:#fff}
+#card>div{max-width:100%}
+.btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:360px;max-width:100%}
+button,a.btn{flex:1 1 150px;min-height:46px;border-radius:12px;border:1.5px solid var(--ink);background:#fff;color:var(--ink);font:700 14px inherit;font-family:inherit;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center}
+button.dark{background:var(--ink);color:#FBF6E9}
+.msg{font-size:13px;color:var(--mut);text-align:center;min-height:18px}
+.empty{max-width:360px;text-align:center;padding:60px 20px;line-height:1.7}
+.empty h1{font-family:'Noto Serif KR',serif;font-size:24px}
+</style>
+</head>
+<body>
+<main>
+  <div id="card"></div>
+  <div class="btns" id="btns" hidden>
+    <button class="dark" id="bShare" hidden>이미지로 공유</button>
+    <button id="bPng">이미지 저장</button>
+    <button id="bPdf">PDF 저장 (A4)</button>
+    <a class="btn" href="#" id="bTel">상담 전화</a>
+  </div>
+  <div class="msg" id="msg"></div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/*CORE*/
+(function(){
+  const $=id=>document.getElementById(id);
+  const q=new URLSearchParams(location.search).get('r')||location.hash.slice(1);
+  const d=q?decodeState(q):null;
+  if(!d){$('card').outerHTML=`<div class="empty"><h1>브추교육학원</h1><p>레벨테스트 결과 링크가 올바르지 않거나 만료되었습니다.<br>학원에서 받은 링크를 다시 열어 주세요.</p><p>상담 ${ACADEMY_TEL}</p></div>`;return}
+  const m=model(d.st,d.info);
+  document.title=`${m.name} 레벨테스트 결과 · 브추교육학원`;
+  $('card').innerHTML=phoneHtml(m);$('btns').hidden=false;
+  $('bTel').href='tel:'+ACADEMY_TEL.replace(/-/g,'');
+  const msg=t=>$('msg').textContent=t;
+  const go=async(label,fn)=>{msg(label+' 만드는 중…');try{await fn()}catch(e){msg('저장하지 못했습니다. 다시 시도해 주세요.')}};
+  $('bPng').onclick=()=>go('이미지',async()=>{await saveFile(fileBase(m)+'.png',await makePngBlob(m));msg('이미지를 저장했습니다.')});
+  $('bPdf').onclick=()=>go('PDF',async()=>{await saveFile(fileBase(m)+'.pdf',await makePdfBlob(m));msg('PDF를 저장했습니다.')});
+  try{if(navigator.canShare&&navigator.canShare({files:[new File(['x'],'x.png',{type:'image/png'})]})){$('bShare').hidden=false;
+    $('bShare').onclick=()=>go('이미지',async()=>{if(await shareBlob(await makePngBlob(m),fileBase(m)+'.png',m.name+' 레벨테스트 결과'))msg('')})}}catch(e){}
+})();
+</script>
+</body>
+</html>

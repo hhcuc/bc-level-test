@@ -1,0 +1,466 @@
+<title>2단계 레벨테스트 채점기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700;900&display=swap">
+<style>
+/* Layout: 왼쪽 채점 입력 / 오른쪽 상담 리포트(sticky). 좁으면 위아래로 쌓임 */
+:root{
+  --bg:#FBF6E9; --panel:#FFFFFF; --ink:#3E2A1E; --muted:#7A5E48; --line:#E8D7B4;
+  --butter:#F6E7B8; --wheat:#E3C38E; --walnut:#8A5A36; --cocoa:#4A3020;
+  --ok:#2F7A4B; --okbg:#E3F1E6; --no:#B4452F; --nobg:#F8E1DA; --warn:#9A6A00; --warnbg:#FFF0C7;
+  --serif:'Noto Serif KR',Georgia,serif; --sans:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1F1712; --panel:#2A2019; --ink:#F3E6CF; --muted:#C2A98C; --line:#4A3828;
+  --butter:#4A3A1C; --wheat:#7A5A2E; --walnut:#C98E5C; --cocoa:#E3C38E;
+  --ok:#7FD39B; --okbg:#1E3A28; --no:#F0957F; --nobg:#46241C; --warn:#F2C766; --warnbg:#3D3015; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1F1712; --panel:#2A2019; --ink:#F3E6CF; --muted:#C2A98C; --line:#4A3828;
+  --butter:#4A3A1C; --wheat:#7A5A2E; --walnut:#C98E5C; --cocoa:#E3C38E;
+  --ok:#7FD39B; --okbg:#1E3A28; --no:#F0957F; --nobg:#46241C; --warn:#F2C766; --warnbg:#3D3015; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.55}
+.wrap{max-width:1240px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:3px;color:var(--walnut)}
+h1{font-family:var(--serif);font-size:clamp(24px,4vw,34px);margin:4px 0 0;text-wrap:balance}
+h2{font-family:var(--serif);font-size:18px;margin:0}
+.tabs{display:flex;gap:6px}
+.tab{border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:6px 14px;font:700 13px var(--sans);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.info label{display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:700;color:var(--muted)}
+input[type=text],input[type=date]{font:500 14px var(--sans);color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 9px}
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.phead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.pscore{font-variant-numeric:tabular-nums;font-weight:700;color:var(--walnut)}
+.lvrow{display:flex;flex-direction:column;gap:6px}
+.lvlab{font-size:12px;font-weight:700;color:var(--muted)}
+.items{display:flex;flex-wrap:wrap;gap:6px}
+.it{min-width:58px;min-height:44px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:4px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font:500 12px var(--sans);line-height:1.25}
+.it b{font-size:14px}
+.it small{font-size:10.5px;color:var(--muted);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.it.o{background:var(--okbg);border-color:var(--ok)}
+.it.o b{color:var(--ok)}
+.it.x{background:var(--nobg);border-color:var(--no)}
+.it.x b{color:var(--no)}
+.it:focus-visible,.tab:focus-visible,.btn:focus-visible,.seg button:focus-visible{outline:2px solid var(--walnut);outline-offset:2px}
+.syn{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+.synitem{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+.synitem div{font-size:12px;color:var(--muted)}
+.seg{display:flex;gap:4px}
+.seg button{flex:1;min-height:36px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;font:700 13px var(--sans);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--walnut);border-color:var(--walnut);color:var(--panel)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1.5px solid var(--ink);background:var(--panel);color:var(--ink);border-radius:8px;padding:7px 12px;font:700 13px var(--sans);cursor:pointer;min-height:38px}
+.btn.dark{background:var(--ink);color:var(--bg)}
+.hint{font-size:12px;color:var(--muted)}
+.sample{font-size:12px;font-weight:700;background:var(--warnbg);color:var(--warn);border-radius:999px;padding:3px 10px}
+.report{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+.total{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.total .n{font-family:var(--serif);font-size:52px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:64px minmax(0,1fr) 72px;gap:8px;align-items:center;font-size:13px}
+.track{height:12px;background:var(--butter);border-radius:6px;overflow:hidden}
+.fill{height:100%;background:var(--walnut);border-radius:6px;transition:width .25s}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+.num{font-variant-numeric:tabular-nums;text-align:right;font-weight:700}
+.lvls{font-size:11.5px;color:var(--muted);grid-column:2/4}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:700}
+.stepchip{display:inline-block;font-weight:900;font-size:12px;border-radius:6px;padding:2px 8px}
+.s1{background:#F6E7B8;color:#3E2A1E}.s2{background:#E3C38E;color:#3E2A1E}.s3{background:#8A5A36;color:#FFFFFF}.s4{background:#4A3020;color:#F6E7B8}
+.m3{border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;border:1.5px solid var(--line)}
+.m3 .verdict{font-weight:900;font-size:15px}
+.m3.go{background:var(--okbg);border-color:var(--ok)}.m3.go .verdict{color:var(--ok)}
+.m3.hold{background:var(--warnbg);border-color:var(--warn)}.m3.hold .verdict{color:var(--warn)}
+.m3.no{background:var(--nobg);border-color:var(--no)}.m3.no .verdict{color:var(--no)}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;font-size:12.5px}
+.checks li::before{content:attr(data-m);display:inline-block;width:18px;font-weight:900}
+.comment{white-space:pre-wrap;background:var(--bg);border:1px dashed var(--wheat);border-radius:10px;padding:10px 12px;font-size:13px}
+.tablebox{overflow-x:auto}
+.lvchip{display:inline-block;font-size:11px;font-weight:700;background:var(--butter);color:var(--ink);border-radius:6px;padding:1px 7px;margin-top:3px;white-space:nowrap}
+.capturing{position:static!important}.capturing .noexport{display:none!important}
+.exp{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);padding-top:12px}
+#printArea{display:none}
+@media print{.wrap{display:none!important}#printArea{display:block!important}body{background:#fff!important}}
+@page{size:A4;margin:0}
+.mapgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">BRYAN CHU EDUCATION · 중등부 무학년제</div>
+      <h1>2단계 레벨테스트 채점·상담</h1>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-grade" aria-selected="true">채점·리포트</button>
+      <button class="tab" role="tab" id="tab-map" aria-selected="false">문항 분석표</button>
+    </div>
+  </header>
+
+  <section id="view-grade" class="grid">
+    <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+      <div class="card">
+        <div class="phead"><h2>학생 정보</h2><span id="sampleTag" class="sample">예시 학생 데이터</span></div>
+        <div class="info">
+          <label for="sName">이름<input type="text" id="sName"></label>
+          <label for="sSchool">학교 / 학년<input type="text" id="sSchool"></label>
+          <label for="sDate">응시일<input type="date" id="sDate"></label>
+        </div>
+        <div class="tools">
+          <button class="btn" id="btnAllO">정답 일괄 O</button>
+          <button class="btn" id="btnReset">새 학생 (초기화)</button>
+          <button class="btn" id="btnSample">예시 다시 불러오기</button>
+          <span class="hint">문항을 누르면 미채점 → O → X 순서로 바뀝니다. 칸 아래 작은 글씨가 정답입니다.</span>
+        </div>
+      </div>
+      <div id="parts" style="display:flex;flex-direction:column;gap:16px"></div>
+    </div>
+
+    <aside class="card report" aria-live="polite">
+      <div class="phead"><h2 id="rTitle">상담 리포트</h2><span class="hint" id="rMeta"></span></div>
+      <div class="total"><span class="n" id="tot">0</span><span>/ 100점</span><span class="hint" id="tLisn"></span></div>
+      <div class="bars" id="bars"></div>
+      <div class="tablebox"><table>
+        <thead><tr><th>영역</th><th>추천 단계</th><th>연결 교재</th><th>난이도 (범위 · 추정)</th></tr></thead>
+        <tbody id="recs"></tbody>
+      </table></div>
+      <div id="m3" class="m3"></div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div class="phead"><h2>상담 코멘트</h2><button class="btn dark noexport" id="btnCopy">코멘트 복사</button></div>
+        <div class="comment" id="comment"></div>
+      </div>
+      <div class="exp noexport">
+        <button class="btn dark" id="exPdf">PDF 저장 (A4)</button>
+        <button class="btn" id="exPng">PNG 저장 (9:16)</button>
+        <button class="btn" id="exCopy">이미지 복사</button>
+        <button class="btn" id="exShare" hidden>공유하기</button>
+        <button class="btn dark" id="exLink">학부모 링크 복사</button>
+        <button class="btn" id="exPrint" hidden>인쇄 (A4)</button>
+        <span class="hint" id="exMsg">PNG는 휴대폰 화면(1080×1920), PDF는 A4 한 장으로 저장됩니다.</span>
+        <input type="text" id="linkOut" readonly hidden aria-label="학부모 링크" style="width:100%">
+      </div>
+    </aside>
+  </section>
+
+  <section id="view-map" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <h2>시험 구조와 커리큘럼 연결</h2>
+      <div class="mapgrid">
+        <div><b>어휘 10문항 · 7점</b><div class="hint">3단계 원본 예문 빈칸(첫 글자 제시). 정답 수로 단어장을 정합니다: 0~3 중등실력, 4~5 중고난도, 6~7 고등베이직, 8~9 수능2000, 10 고등Complete. EBS 파이널·하이스트는 3단계 결과로 판단합니다.</div></div>
+        <div><b>구문 6문항 · 18점</b><div class="hint">1~3번(중) 비교·not A but B·도치, 4~6번(상) 강조구문·가정법 도치·복합 명사절. 상 점수로 Intermediate와 Advanced를 가릅니다.</div></div>
+        <div><b>문법 20문항 · 30점</b><div class="hint">하 7(중2 문법 범위), 중 6(중3 분사·영작), 상 7(관계사·수일치·수능어법 4). 17~20번이 수능어법반 진입 신호입니다.</div></div>
+        <div><b>독해 15문항 · 45점</b><div class="hint">하 5(중2 유형), 중 5(중3·고1 유형), 상 5(순서·삽입·수능기출 3). 13~15번 수능기출이 M-3 하이퍼 판단의 핵심 문항입니다.</div></div>
+      </div>
+      <div class="hint">단계 판정 기준: 영역별 가중 정답률 50% 미만 STEP 1, 70% 미만 STEP 2, 85% 미만 STEP 3, 85% 이상 STEP 4. 단 STEP 3은 상 문항 40% 이상, STEP 4는 상 문항 80% 이상일 때만 부여합니다.</div>
+    </div>
+    <div class="card"><h2>문법 문항표</h2><div class="tablebox"><table><thead><tr><th>번호</th><th>난도</th><th>정답</th><th>평가 포인트</th><th>출처</th></tr></thead><tbody id="mapG"></tbody></table></div></div>
+    <div class="card"><h2>독해 문항표</h2><div class="tablebox"><table><thead><tr><th>번호</th><th>난도</th><th>정답</th><th>유형</th><th>출처</th></tr></thead><tbody id="mapR"></tbody></table></div></div>
+    <div class="card"><h2>구문 문항표</h2><div class="tablebox"><table><thead><tr><th>번호</th><th>난도</th><th>핵심 구문</th></tr></thead><tbody id="mapS"></tbody></table></div></div>
+  </section>
+</div>
+<div id="printArea"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ===== 2단계 레벨테스트 공통 엔진 (정답 데이터 없음) =====
+const ACADEMY_TEL='0507-1389-3392';
+const LVG=[...'하하하하하하하중중중중중중상상상상상상상'];
+const LVRD=[...'하하하하하중중중중중상상상상상'];
+const W={하:{g:1,r:2},중:{g:1.5,r:3},상:{g:2,r:4}};
+// 난이도 척도: 8=중2, 9=중3, 10=고1, 11=고2, 12=고3
+const LVR={어휘:[8,9.5],구문:[9,10],문법:[8,11],독해:[8,12]};
+const clamp01=x=>Math.max(0,Math.min(1,x));
+const gfmt=x=>x<10?'중'+(x-6).toFixed(1).replace(/\.0$/,''):'고'+(x-9).toFixed(1);
+const rng=k=>`${gfmt(LVR[k][0])}~${gfmt(LVR[k][1])}`;
+const estV=(k,w)=>LVR[k][0]+(LVR[k][1]-LVR[k][0])*clamp01(w);
+const est=(k,w)=>gfmt(estV(k,w));
+const BOOK={syn:['Basic','Intermediate','Advanced 01','Advanced 심화'],read:['중2 독해','중3 독해','고2 독해','수능 독해 심화'],gram:['중2 문법','중3 문법','고2 문법','수능어법'],mock:['고1','고1','고2','고3']};
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const fmt1=x=>(+x.toFixed(1)).toString();
+
+function calc(st){
+  const cnt=a=>a.filter(x=>x===1).length;
+  const v={c:cnt(st.v)};v.pts=v.c*0.7;
+  const sp=st.s.map(x=>x||0);
+  const s={pts:sum(sp),mid:sum(sp.slice(0,3)),hi:sum(sp.slice(3))};s.w=s.pts/18;s.u=s.hi/9;
+  const area=(k,L)=>{const o={pts:0,max:0,lv:{하:[0,0],중:[0,0],상:[0,0]}};
+    L.forEach((lv,i)=>{const w=W[lv][k];o.max+=w;o.lv[lv][1]++;if(st[k][i]===1){o.pts+=w;o.lv[lv][0]++}});
+    o.w=o.pts/o.max;o.u=o.lv.상[0]/o.lv.상[1];return o};
+  const g=area('g',LVG),r=area('r',LVRD);
+  return{v,s,g,r,l:st.lOn?cnt(st.l):null,total:v.pts+s.pts+g.pts+r.pts};
+}
+function step(w,u){let s=w<.5?1:w<.7?2:w<.85?3:4;if(s===4&&u<.8)s=3;if(s===3&&u<.4)s=2;return s}
+function vocab(c){return c<=3?['중등실력',1]:c<=5?['중고난도',2]:c<=7?['고등베이직',2]:c<=9?['수능2000',3]:['고등Complete',3]}
+
+function model(st,info){
+  const sc=calc(st);const name=(info.n||'').trim()||'학생';
+  const WR={어휘:sc.v.c/10,구문:sc.s.w,문법:sc.g.w,독해:sc.r.w};
+  const sS=step(sc.s.w,sc.s.u),sR=step(sc.r.w,sc.r.u),sG=step(sc.g.w,sc.g.u),[vb,sV]=vocab(sc.v.c);
+  const core=Math.floor((sS+sR+sG)/3);
+  const csat=[12,13,14].filter(i=>st.r[i]===1).length,gcsat=[16,17].filter(i=>st.g[i]===1).length;
+  const cks=[[csat>=2,`독해 수능기출(13~15) ${csat}/3 — 기준 2 이상`],[sc.r.lv.상[0]>=4,`독해 상 ${sc.r.lv.상[0]}/5 — 기준 4 이상`],[sc.g.lv.상[0]>=5&&gcsat>=1,`문법 상 ${sc.g.lv.상[0]}/7, 수능어법 ${gcsat}/2 — 기준 5 이상·1 이상`],[sc.s.hi>=6,`구문 상 ${sc.s.hi}/9점 — 기준 6 이상`]];
+  const pass=cks.filter(c=>c[0]).length;
+  const [cls,vd,nx]=pass===4?['go','M-3 하이퍼 후보','3단계 테스트와 수능특강(상) 문항 확인으로 최종 확정']:pass>=2?['hold','M-3 하이퍼 보류','STEP 3 과정 4~8주 후 재응시 권장']:['no','M-3 하이퍼 대상 아님','월·금 / 화·목 정규반에서 단계별 진행'];
+  const ar=[['구문',sc.s.w],['문법',sc.g.w],['독해',sc.r.w],['어휘',sc.v.c/10]].sort((a,b)=>a[1]-b[1]);
+  const pattern=(o,n)=>{const h=o.lv.하[0]/o.lv.하[1],u=o.lv.상[0]/o.lv.상[1];return h>=.8&&u<.4?`${n}는 기본 유형은 안정적이지만 상 문항(추론·수능형)에서 크게 떨어집니다.`:h<.6?`${n}는 하 문항부터 흔들려 기본기 정리가 먼저 필요합니다.`:''};
+  const total=fmt1(sc.total);
+  const lines=[`${name} 학생은 100점 만점에 ${total}점으로, 종합 STEP ${core} 수준입니다.`,
+    `가장 강한 영역은 ${ar[3][0]}, 보완이 필요한 영역은 ${ar[0][0]}입니다.`,pattern(sc.r,'독해'),pattern(sc.g,'문법'),
+    `권장 배치: 구문독해 ${BOOK.syn[sS-1]}, 독해 ${BOOK.read[sR-1]}, 문법 ${BOOK.gram[sG-1]}, 어휘 ${vb}. STEP 1~3은 과목별 수강이 가능합니다.`,
+    `M-3 하이퍼: ${vd} (${pass}/4 기준 충족).`].filter(Boolean);
+  const lvTxt=o=>`하 ${o.lv.하[0]}/${o.lv.하[1]} · 중 ${o.lv.중[0]}/${o.lv.중[1]} · 상 ${o.lv.상[0]}/${o.lv.상[1]}`;
+  const areas=[['어휘',sc.v.pts,7,`${sc.v.c}/10 정답`,sV],['구문',sc.s.pts,18,`중 ${sc.s.mid}/9 · 상 ${sc.s.hi}/9`,sS],['문법',sc.g.pts,30,lvTxt(sc.g),sG],['독해',sc.r.pts,45,lvTxt(sc.r),sR]];
+  const recs=[['구문독해',sS,BOOK.syn[sS-1],'구문'],['독해',sR,BOOK.read[sR-1],'독해'],['문법',sG,BOOK.gram[sG-1],'문법'],['어휘',sV,vb+' 단어장','어휘'],['실전모고',sR,BOOK.mock[sR-1],null]];
+  return{name,school:info.sc||'',date:info.d||'',sc,WR,sS,sR,sG,sV,vb,core,total,m3:{cls,vd,nx,cks,pass},lines,areas,recs};
+}
+
+// ----- 링크용 인코딩 -----
+function encodeState(st,info){
+  const t=a=>a.map(x=>x===1?'1':x===0?'0':'-').join('');
+  const o={n:info.n||'',sc:info.sc||'',d:info.d||'',v:t(st.v),s:st.s.map(x=>x==null?'-':x).join(''),g:t(st.g),r:t(st.r),l:st.lOn?t(st.l):''};
+  const b=new TextEncoder().encode(JSON.stringify(o));let s='';b.forEach(c=>s+=String.fromCharCode(c));
+  return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function decodeState(str){
+  try{
+    let b=str.replace(/-/g,'+').replace(/_/g,'/');while(b.length%4)b+='=';
+    const bin=atob(b);const o=JSON.parse(new TextDecoder().decode(Uint8Array.from(bin,c=>c.charCodeAt(0))));
+    const f=c=>c==='1'?1:c==='0'?0:null;
+    const ok=(x,n)=>typeof x==='string'&&x.length===n;
+    if(!ok(o.v,10)||!ok(o.s,6)||!ok(o.g,20)||!ok(o.r,15))return null;
+    return{st:{v:[...o.v].map(f),s:[...o.s].map(c=>c==='-'?null:Math.min(3,parseInt(c,10)||0)),g:[...o.g].map(f),r:[...o.r].map(f),l:ok(o.l,12)?[...o.l].map(f):Array(12).fill(null),lOn:ok(o.l,12)},info:{n:String(o.n||'').slice(0,40),sc:String(o.sc||'').slice(0,60),d:String(o.d||'').slice(0,20)}};
+  }catch(e){return null}
+}
+
+// ----- 리포트 템플릿 (내보내기 전용, 밝은 색 고정) -----
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const C={ink:'#3E2A1E',mut:'#7A5E48',line:'#EADBBE',cream:'#FBF6E9',but:'#F6E7B8',wheat:'#E3C38E',wal:'#8A5A36',coc:'#4A3020',track:'#F1E6CF'};
+const STEPC=[null,['#F6E7B8','#3E2A1E'],['#E3C38E','#3E2A1E'],['#8A5A36','#FFFFFF'],['#4A3020','#F6E7B8']];
+const chipS=(n,fs=12)=>`<span style="display:inline-block;background:${STEPC[n][0]};color:${STEPC[n][1]};font-weight:900;font-size:${fs}px;line-height:1.5;border-radius:6px;padding:1px 8px;white-space:nowrap">STEP ${n}</span>`;
+const M3C={go:['#E3F1E6','#2F7A4B'],hold:['#FFF0C7','#8A5A00'],no:['#F6EDE4','#7A5E48']};
+function lvScale(k,w,h){const [a,b]=LVR[k];const p=x=>(x-8)/4*100;const e=p(estV(k,w));const d=h+6;
+  return `<div style="position:relative;height:${d}px">
+    <div style="position:absolute;left:0;right:0;top:3px;height:${h}px;background:${C.track};border-radius:${h}px"></div>
+    <div style="position:absolute;left:${p(a)}%;width:${p(b)-p(a)}%;top:3px;height:${h}px;background:${C.wheat};border-radius:${h}px"></div>
+    <div style="position:absolute;left:${e}%;margin-left:-${d/2}px;top:0;width:${d}px;height:${d}px;border-radius:50%;background:${C.wal};border:2px solid #FFFFFF;box-sizing:border-box"></div>
+  </div>`}
+const axis=fs=>`<div style="display:flex;justify-content:space-between;font-size:${fs}px;color:${C.mut};font-weight:700"><span>중2</span><span>중3</span><span>고1</span><span>고2</span><span>고3</span></div>`;
+const FONT=`font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif`;
+const SERIF=`font-family:'Noto Serif KR',Georgia,serif`;
+
+function a4Html(m){
+  const meta=[m.school,m.date].filter(Boolean).map(esc).join(' · ');
+  const bars=m.areas.map(([n,p,mx,t,s])=>`
+    <div style="display:grid;grid-template-columns:62px 150px 1fr 96px;gap:14px;align-items:center;padding:10px 0;border-top:1px solid ${C.line}">
+      <b style="font-size:15px">${n}</b>
+      <div><div style="font-size:15px;font-weight:900">${fmt1(p)} <span style="font-size:12px;font-weight:500;color:${C.mut}">/ ${mx}</span></div><div style="font-size:11px;color:${C.mut}">${t}</div></div>
+      <div>${lvScale(n,m.WR[n],8)}<div style="font-size:11px;color:${C.mut};margin-top:3px">시험 범위 ${rng(n)}</div></div>
+      <div style="text-align:right"><div style="font-size:11px;color:${C.mut}">추정 수준</div><div style="font-size:17px;font-weight:900;color:${C.wal}">${est(n,m.WR[n])}</div></div>
+    </div>`).join('');
+  const recs=m.recs.map(([a,s,b,k])=>`<tr><td style="padding:8px 10px;border-top:1px solid ${C.line};font-weight:700">${a}</td><td style="padding:8px 10px;border-top:1px solid ${C.line}">${chipS(s)}</td><td style="padding:8px 10px;border-top:1px solid ${C.line}">${esc(b)}</td><td style="padding:8px 10px;border-top:1px solid ${C.line};color:${C.mut}">${k?`${rng(k)} · <b style="color:${C.ink}">${est(k,m.WR[k])}</b>`:'–'}</td></tr>`).join('');
+  const [mb,mf]=M3C[m.m3.cls];
+  return `<div style="width:794px;height:1122px;flex:none;box-sizing:border-box;padding:46px 50px 34px;background:#FFFFFF;color:${C.ink};${FONT};display:flex;flex-direction:column;gap:18px;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2.5px solid ${C.ink};padding-bottom:14px">
+      <div><div style="font-size:11px;font-weight:700;letter-spacing:3px;color:${C.wal}">BRYAN CHU EDUCATION · 중등부 무학년제</div>
+        <div style="${SERIF};font-size:30px;font-weight:900;margin-top:4px">2단계 레벨테스트 결과 리포트</div></div>
+      <div style="text-align:right"><div style="${SERIF};font-size:24px;font-weight:900">${esc(m.name)}</div><div style="font-size:12px;color:${C.mut}">${meta}</div></div>
+    </div>
+    <div style="display:flex;gap:18px;align-items:stretch">
+      <div style="width:180px;flex:none;background:${C.cream};border-radius:14px;padding:18px;display:flex;flex-direction:column;justify-content:center;gap:6px">
+        <div style="font-size:12px;font-weight:700;color:${C.mut}">총점</div>
+        <div><span style="${SERIF};font-size:52px;font-weight:900;line-height:1">${m.total}</span><span style="font-size:14px;color:${C.mut}"> / 100</span></div>
+        <div style="margin-top:6px">${chipS(m.core,14)} <span style="font-size:12px;color:${C.mut}">종합</span></div>
+        ${m.sc.l!=null?`<div style="font-size:11px;color:${C.mut}">듣기 ${m.sc.l}/12 (참고)</div>`:''}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="display:grid;grid-template-columns:62px 150px 1fr 96px;gap:14px;font-size:11px;color:${C.mut};font-weight:700;padding-bottom:4px"><span>영역</span><span>점수</span>${axis(10)}<span style="text-align:right">난이도</span></div>
+        ${bars}
+      </div>
+    </div>
+    <div>
+      <div style="${SERIF};font-size:17px;font-weight:900;margin-bottom:6px">추천 배치 · 연결 교재</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="background:${C.cream};font-size:11.5px;color:${C.mut}"><th style="text-align:left;padding:7px 10px">영역</th><th style="text-align:left;padding:7px 10px">추천 단계</th><th style="text-align:left;padding:7px 10px">연결 교재</th><th style="text-align:left;padding:7px 10px">난이도 (범위 · 추정)</th></tr></thead>
+        <tbody>${recs}</tbody></table>
+    </div>
+    <div style="display:flex;gap:16px">
+      <div style="flex:1;background:${mb};border:1.5px solid ${mf};border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:5px">
+        <div style="font-size:11px;color:${C.mut}">화·목 M-3 하이퍼 (수능특강 · 고3 수능어법)</div>
+        <div style="font-size:16px;font-weight:900;color:${mf}">${m.m3.vd} <span style="font-size:12px;font-weight:700">(${m.m3.pass}/4)</span></div>
+        ${m.m3.cks.map(c=>`<div style="font-size:11.5px"><b style="display:inline-block;width:16px">${c[0]?'✓':'·'}</b>${c[1]}</div>`).join('')}
+        <div style="font-size:11px;color:${C.mut}">다음 단계: ${m.m3.nx}</div>
+      </div>
+    </div>
+    <div style="flex:1;min-height:0;border:1.5px dashed ${C.wheat};border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px">
+      <div style="${SERIF};font-size:16px;font-weight:900">상담 코멘트</div>
+      ${m.lines.map(l=>`<div style="font-size:13px;line-height:1.65">${esc(l)}</div>`).join('')}
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:${C.mut};border-top:1px solid ${C.line};padding-top:10px">
+      <span><b style="color:${C.ink}">브추교육학원</b> · 상담 ${ACADEMY_TEL}</span>
+      <span>STEP 1 기초 · STEP 2 중등 완성 · STEP 3 예비고1 · STEP 4 특목·자사고</span>
+    </div>
+  </div>`;
+}
+
+function phoneHtml(m){
+  const meta=[m.school,m.date].filter(Boolean).map(esc).join(' · ');
+  const rows=m.areas.map(([n,p,mx,t,s])=>`
+    <div style="display:flex;flex-direction:column;gap:4px;padding:8px 0;border-top:1px solid ${C.line}">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:14px;font-weight:900">${n} <span style="font-size:11.5px;font-weight:500;color:${C.mut}">${fmt1(p)}/${mx}</span></span>
+        <span style="display:flex;gap:6px;align-items:center"><span style="font-size:13px;font-weight:900;color:${C.wal}">${est(n,m.WR[n])}</span>${chipS(s,10.5)}</span>
+      </div>
+      ${lvScale(n,m.WR[n],6)}
+    </div>`).join('');
+  const place=m.recs.slice(0,4).map(([a,s,b])=>`<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:${C.mut}">${a}</span><b>${esc(b)}</b></div>`).join('');
+  const [mb,mf]=M3C[m.m3.cls];
+  const showM3=m.m3.pass>=2;
+  return `<div style="width:360px;height:640px;flex:none;box-sizing:border-box;padding:22px 22px 16px;background:#FFFFFF;color:${C.ink};${FONT};display:flex;flex-direction:column;gap:10px;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid ${C.ink};padding-bottom:9px">
+      <div><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:${C.wal}">BRYAN CHU EDUCATION</div>
+        <div style="${SERIF};font-size:19px;font-weight:900;margin-top:2px">레벨테스트 결과</div></div>
+      <div style="text-align:right"><div style="${SERIF};font-size:17px;font-weight:900">${esc(m.name)}</div><div style="font-size:10px;color:${C.mut}">${meta}</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;background:${C.cream};border-radius:12px;padding:10px 14px">
+      <div><div style="font-size:10.5px;font-weight:700;color:${C.mut}">총점</div><span style="${SERIF};font-size:38px;font-weight:900;line-height:1">${m.total}</span><span style="font-size:12px;color:${C.mut}"> / 100</span></div>
+      <div style="text-align:right;display:flex;flex-direction:column;gap:4px;align-items:flex-end"><span style="font-size:10.5px;color:${C.mut}">종합 수준</span>${chipS(m.core,14)}</div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px"><span style="font-size:12px;font-weight:900">영역별 난이도</span><span style="font-size:9.5px;color:${C.mut}">● 추정 수준 · 색 띠 시험 범위</span></div>
+      ${axis(9)}
+      ${rows}
+    </div>
+    <div style="background:${C.cream};border-radius:10px;padding:8px 12px">
+      <div style="font-size:12px;font-weight:900;margin-bottom:2px">추천 배치</div>${place}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:3px;padding:0 2px">${m.lines.filter(l=>!/^(권장|M-3)/.test(l)).slice(1,3).map(l=>`<div style="font-size:11.5px;line-height:1.55;color:${C.ink}">· ${esc(l)}</div>`).join('')}</div>
+    ${showM3?`<div style="background:${mb};border:1.5px solid ${mf};border-radius:10px;padding:7px 12px;font-size:12px;font-weight:900;color:${mf}">${m.m3.vd} <span style="font-weight:500;color:${C.mut};font-size:10.5px">화·목 M-3 하이퍼반</span></div>`:''}
+    <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:10.5px;color:${C.mut};border-top:1px solid ${C.line};padding-top:8px">
+      <b style="color:${C.ink}">브추교육학원</b><span>상담 ${ACADEMY_TEL}</span>
+    </div>
+  </div>`;
+}
+
+// ----- 이미지·PDF 만들기 -----
+let __rid=0;
+async function renderCanvas(html,w,h,scale){
+  const id='__cap'+(++__rid);
+  const host=document.createElement('div');host.id=id;
+  host.style.cssText=`position:fixed;left:-40000px;top:0;width:${w}px;height:${h}px;z-index:-1`;
+  host.innerHTML=html;document.body.appendChild(host);
+  try{
+    try{await Promise.all(['400 14px "Noto Sans KR"','700 14px "Noto Sans KR"','900 14px "Noto Sans KR"','900 14px "Noto Serif KR"'].map(f=>document.fonts.load(f)));await document.fonts.ready}catch(e){}
+    return await html2canvas(host.firstElementChild,{scale,backgroundColor:'#FFFFFF',width:w,height:h,windowWidth:Math.max(w,1200),scrollX:0,scrollY:0,
+      onclone:d=>{const c=d.getElementById(id);if(c){c.style.left='0px';c.style.zIndex='9999'}}});
+  }finally{host.remove()}
+}
+async function makePngBlob(m){const c=await renderCanvas(phoneHtml(m),360,640,3);return await new Promise(r=>c.toBlob(r,'image/png'))}
+async function makePdfBlob(m){const c=await renderCanvas(a4Html(m),794,1122,2);
+  const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4'});pdf.addImage(c.toDataURL('image/jpeg',0.93),'JPEG',0,0,210,297);return pdf.output('blob')}
+async function saveFile(filename,blob){
+  let dl=null;try{if(window.claude&&window.claude.use)dl=await window.claude.use('downloads')}catch(e){}
+  if(dl){await dl.save({filename,data:blob});return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);
+}
+async function shareBlob(blob,filename,title){
+  const f=new File([blob],filename,{type:blob.type});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title});return true}
+  return false;
+}
+const fileBase=m=>`${m.name}_2단계_레벨테스트${m.date?'_'+m.date:''}`.replace(/[\\/:*?"<>|]/g,'');
+const isTopLevel=(()=>{try{return window.top===window.self}catch(e){return false}})();
+
+const REPORT_BASE='https://bchoo-leveltest-788-9a4d.vercel.app/';
+const V=['significant','obvious','operate','relieve','constant','blurred','applause','awkward','enroll','pleaded'];
+const S=[['중','as ~ as, 과거완료'],['중','not A but B, to부정사 보어'],['중','장소 부사구 도치, 분사 병렬'],['상','It was not until ~ that 강조'],['상','Had it not been for 가정법 도치'],['상','the 비교급, 가주어, what절, less A than B']];
+const G=[['하','⑤','현재완료진행','1단계 21'],['하','⑤','강조 재귀대명사','1단계 22'],['하','③','사역동사 수동태','1단계 23'],['하','③','seem to부정사 전환','1단계 24'],['하','⑤','동명사 vs 현재분사','1단계 25'],['하','herself','재귀대명사 영작','1단계 52'],['하','It','가주어','1단계 54'],
+['중','④','분사구문','1단계 26'],['중','⑤','get O p.p.','1단계 27'],['중','①','조건 부사절 시제','1단계 28'],['중','I entering','독립분사구문 영작','1단계 56'],['중','5형식','consider O C 영작','1단계 57'],['중','so~that','so ~ that 영작','1단계 58'],
+['상','③','관계대명사 that/which','1단계 29'],['상','②','주어·동사 수일치','1단계 30'],['상','5 times','배수 비교 영작','1단계 60'],['상','②','수능어법 (a little)','3단계 수능어법 3'],['상','④','수능어법 (farther)','3단계 수능어법 5'],['상','turned','동사 자리','3단계 기출 응용'],['상','unhurried','보어 자리 형용사','3단계 기출']];
+const R=[['하','⑤','도표','1단계 33'],['하','④','안내문 일치','1단계 34'],['하','②','심경','1단계 36'],['하','①','제목','1단계 38'],['하','②','빈칸(낱말)','1단계 39'],
+['중','②','어휘 네모','1단계 42'],['중','⑤','제목','1단계 43'],['중','②','빈칸(구)','1단계 45'],['중','③','무관한 문장','1단계 46'],['중','③','연결어','1단계 47'],
+['상','④','글의 순서','1단계 48'],['상','④','문장 삽입','1단계 49'],['상','③','빈칸 추론 · 수능기출','3단계 3'],['상','②','어휘 추론 · 수능기출','3단계 2'],['상','④','빈칸 추론 · 수능기출','3단계 4']];
+
+let st;let isSample=true;
+const $=id=>document.getElementById(id);
+function blank(){return{v:Array(10).fill(null),s:Array(6).fill(null),g:Array(20).fill(null),r:Array(15).fill(null),l:Array(12).fill(null),lOn:false}}
+function sample(){const o=x=>[...x].map(c=>c==='o'?1:c==='x'?0:null);
+  return{v:o('ooxooxoxoo'),s:[3,2,3,2,1,1],g:o('ooooxooooxoxooxoxoxo'),r:o('oooooooxoooxoxx'),l:o('ooooxoooxooo'),lOn:true}}
+const info=()=>({n:$('sName').value,sc:$('sSchool').value,d:$('sDate').value});
+const cur=()=>model(st,info());
+
+function cyc(a,i){a[i]=a[i]===null?1:a[i]===1?0:null}
+function chip(label,ans,val,on){const b=document.createElement('button');b.className='it'+(val===1?' o':val===0?' x':'');b.type='button';
+  b.innerHTML=`<b>${label}${val===1?' O':val===0?' X':''}</b>${ans?`<small>${esc(ans)}</small>`:''}`;b.setAttribute('aria-label',`${label}번 ${val===1?'정답':val===0?'오답':'미채점'}`);b.onclick=on;return b}
+
+function renderParts(){
+  const P=$('parts');P.innerHTML='';const sc=calc(st);
+  const card=(title,score)=>{const c=document.createElement('div');c.className='card';c.innerHTML=`<div class="phead"><h2>${title}</h2><span class="pscore">${score}</span></div>`;P.appendChild(c);return c};
+  let c=card('Part 1 · 어휘',`${fmt1(sc.v.pts)} / 7`);const iv=document.createElement('div');iv.className='items';
+  V.forEach((w,i)=>iv.appendChild(chip(i+1,w,st.v[i],()=>{cyc(st.v,i);upd()})));c.appendChild(iv);
+  c=card('Part 2 · 구문 해석·표기',`${sc.s.pts} / 18`);const sy=document.createElement('div');sy.className='syn';
+  S.forEach((x,i)=>{const d=document.createElement('div');d.className='synitem';d.innerHTML=`<b>${i+1}번 · ${x[0]}</b><div>${x[1]}</div>`;
+    const sg=document.createElement('div');sg.className='seg';[0,1,2,3].forEach(p=>{const b=document.createElement('button');b.type='button';b.textContent=p;b.setAttribute('aria-pressed',st.s[i]===p);b.setAttribute('aria-label',`${i+1}번 ${p}점`);b.onclick=()=>{st.s[i]=p;upd()};sg.appendChild(b)});
+    d.appendChild(sg);sy.appendChild(d)});c.appendChild(sy);
+  c.insertAdjacentHTML('beforeend','<div class="hint">해석 2점 + 구문 표시 1점</div>');
+  [['g',G,'Part 3 · 문법',30],['r',R,'Part 4 · 독해',45]].forEach(([k,D,t,mx])=>{
+    c=card(t,`${fmt1(sc[k].pts)} / ${mx}`);
+    ['하','중','상'].forEach(lv=>{const row=document.createElement('div');row.className='lvrow';row.innerHTML=`<span class="lvlab">${lv} · 문항당 ${W[lv][k]}점</span>`;
+      const it=document.createElement('div');it.className='items';D.forEach((x,i)=>{if(x[0]===lv)it.appendChild(chip(i+1,x[1],st[k][i],()=>{cyc(st[k],i);upd()}))});row.appendChild(it);c.appendChild(row)})});
+  c=card('선택 · 듣기 (참고용)',st.lOn?`${sc.l} / 12`:'미응시');
+  const tg=document.createElement('label');tg.style.cssText='display:flex;gap:8px;align-items:center;font-weight:700';tg.innerHTML=`<input type="checkbox" id="lOn" ${st.lOn?'checked':''}> 듣기 평가 응시`;
+  tg.querySelector('input').onchange=e=>{st.lOn=e.target.checked;upd()};c.appendChild(tg);
+  if(st.lOn){const il=document.createElement('div');il.className='items';st.l.forEach((v,i)=>il.appendChild(chip(i+1,'',v,()=>{cyc(st.l,i);upd()})));c.appendChild(il);
+    c.insertAdjacentHTML('beforeend','<div class="hint">정답은 1단계 원본 정답지(1~5, 7~11, 16~17번)를 따릅니다. 총점에는 넣지 않습니다.</div>')}
+}
+
+function report(){
+  const m=cur(),sc=m.sc;
+  $('tot').textContent=m.total;$('tLisn').textContent=sc.l!=null?`듣기 ${sc.l}/12 (참고)`:'';
+  $('rTitle').textContent=`${m.name} 상담 리포트`;$('rMeta').textContent=[m.school,m.date].filter(Boolean).join(' · ');
+  $('bars').innerHTML=m.areas.map(([n,p,mx,t])=>`<div class="bar"><b>${n}</b><div class="track"><div class="fill" style="width:${p/mx*100}%"></div></div><span class="num">${fmt1(p)}/${mx}</span><span class="lvls">${t}<br><span class="lvchip">범위 ${rng(n)} · 추정 ${est(n,m.WR[n])}</span></span></div>`).join('');
+  $('recs').innerHTML=m.recs.map(([a,s,b,k])=>`<tr><td><b>${a}</b></td><td><span class="stepchip s${s}">STEP ${s}</span></td><td>${esc(b)}</td><td>${k?`${rng(k)} · <b>${est(k,m.WR[k])}</b>`:'–'}</td></tr>`).join('');
+  const x=$('m3');x.className='m3 '+m.m3.cls;
+  x.innerHTML=`<span class="hint">화·목 M-3 하이퍼 (수능특강·고3 수능어법)</span><span class="verdict">${m.m3.vd}</span><ul class="checks">${m.m3.cks.map(c=>`<li data-m="${c[0]?'✓':'·'}">${c[1]}</li>`).join('')}</ul><span class="hint">다음 단계: ${m.m3.nx}</span>`;
+  $('comment').textContent=m.lines.join('\n');
+  $('sampleTag').hidden=!isSample;$('linkOut').hidden=true;
+}
+function upd(){renderParts();report()}
+
+function mapTables(){
+  $('mapG').innerHTML=G.map((x,i)=>`<tr><td>${i+1}</td><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3]}</td></tr>`).join('');
+  $('mapR').innerHTML=R.map((x,i)=>`<tr><td>${i+1}</td><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3]}</td></tr>`).join('');
+  $('mapS').innerHTML=S.map((x,i)=>`<tr><td>${i+1}</td><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('');
+}
+function load(sm){isSample=sm;st=sm?sample():blank();$('sName').value=sm?'예시 학생':'';$('sSchool').value=sm?'○○중 2학년':'';upd()}
+$('btnReset').onclick=()=>load(false);
+$('btnSample').onclick=()=>load(true);
+$('btnAllO').onclick=()=>{['v','g','r'].forEach(k=>st[k]=st[k].map(()=>1));st.s=st.s.map(()=>3);upd()};
+['sName','sSchool','sDate'].forEach(id=>$(id).addEventListener('input',()=>{if(isSample)isSample=false;report()}));
+$('btnCopy').onclick=async()=>{const t=$('comment');try{await navigator.clipboard.writeText(t.textContent);$('btnCopy').textContent='복사됨'}catch(e){const r=document.createRange();r.selectNodeContents(t);const s=getSelection();s.removeAllRanges();s.addRange(r);$('btnCopy').textContent='선택됨 · Ctrl+C'}setTimeout(()=>$('btnCopy').textContent='코멘트 복사',1800)};
+const tabs=[['tab-grade','view-grade'],['tab-map','view-map']];
+tabs.forEach(([t])=>$(t).onclick=()=>tabs.forEach(([t2,v2])=>{$(t2).setAttribute('aria-selected',t2===t);$(v2).hidden=t2!==t}));
+try{$('sDate').value=new Date().toISOString().slice(0,10)}catch(e){}
+
+// ---- 내보내기 ----
+const exMsg=t=>$('exMsg').textContent=t;
+const errMsg=e=>e&&e.code==='declined'?'저장을 취소했습니다.':e&&e.code==='rate_limited'?'잠시 후 다시 눌러 주세요.':'저장하지 못했습니다. 다시 시도해 주세요.';
+async function run(label,fn){exMsg(label+' 만드는 중…');try{await fn();}catch(e){exMsg(errMsg(e))}}
+$('exPng').onclick=()=>run('PNG',async()=>{const m=cur();await saveFile(fileBase(m)+'.png',await makePngBlob(m));exMsg('PNG(9:16)를 저장했습니다.')});
+$('exPdf').onclick=()=>run('PDF',async()=>{const m=cur();await saveFile(fileBase(m)+'.pdf',await makePdfBlob(m));exMsg('A4 PDF를 저장했습니다.')});
+$('exCopy').onclick=()=>{const m=cur();exMsg('이미지 만드는 중…');
+  try{const p=makePngBlob(m);navigator.clipboard.write([new ClipboardItem({'image/png':p})]).then(()=>exMsg('이미지를 복사했습니다. 카카오톡 대화창에 붙여넣기(Ctrl+V) 하세요.'),()=>exMsg('이 화면에서는 이미지 복사가 막혀 있습니다. PNG 저장 또는 학부모 링크를 써 주세요.'))}
+  catch(e){exMsg('이 화면에서는 이미지 복사가 막혀 있습니다. PNG 저장 또는 학부모 링크를 써 주세요.')}};
+const linkBase=()=>isTopLevel&&location.protocol.startsWith('http')?location.origin+'/':REPORT_BASE;
+$('exLink').onclick=async()=>{const url=linkBase()+'?r='+encodeState(st,info());const o=$('linkOut');o.value=url;o.hidden=false;
+  try{await navigator.clipboard.writeText(url);exMsg('학부모용 링크를 복사했습니다. 카카오톡에 붙여넣어 보내세요.')}catch(e){o.focus();o.select();exMsg('링크가 선택되었습니다. Ctrl+C로 복사하세요.')}};
+if(isTopLevel){$('exPrint').hidden=false;$('exPrint').onclick=()=>{$('printArea').innerHTML=a4Html(cur());setTimeout(()=>window.print(),300)}}
+try{if(isTopLevel&&navigator.canShare&&navigator.canShare({files:[new File(['x'],'x.png',{type:'image/png'})]})){$('exShare').hidden=false;
+  $('exShare').onclick=()=>run('이미지',async()=>{const m=cur();if(await shareBlob(await makePngBlob(m),fileBase(m)+'.png',m.name+' 레벨테스트 결과'))exMsg('공유 창을 열었습니다.')})}}catch(e){}
+mapTables();load(true);
+</script>

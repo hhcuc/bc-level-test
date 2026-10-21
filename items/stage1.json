@@ -1,0 +1,326 @@
+{
+ "test": "1단계",
+ "total": 100,
+ "sections": [
+  {
+   "area": "듣기",
+   "nos": "1~17",
+   "points": "일반 1점, 9·13·15번 2점 (총 20)",
+   "answers": [
+    "③",
+    "④",
+    "①",
+    "①",
+    "②",
+    "④",
+    "⑤",
+    "②",
+    "②",
+    "④",
+    "⑤",
+    "④",
+    "④",
+    "⑤",
+    "①",
+    "③",
+    "⑤"
+   ],
+   "source": "source/1단계_듣기_정답지.png (학원 정답지)"
+  },
+  {
+   "area": "문법·독해·서술형",
+   "items": [
+    {
+     "no": 21,
+     "area": "문법",
+     "level": "하",
+     "answer": "⑤*",
+     "point": "현재완료진행 (정답 보기 오류 주의)"
+    },
+    {
+     "no": 22,
+     "area": "문법",
+     "level": "하",
+     "answer": "⑤",
+     "point": "강조 재귀대명사"
+    },
+    {
+     "no": 23,
+     "area": "문법",
+     "level": "하",
+     "answer": "③",
+     "point": "사역동사 수동태"
+    },
+    {
+     "no": 24,
+     "area": "문법",
+     "level": "하",
+     "answer": "③",
+     "point": "seem to → It seems that"
+    },
+    {
+     "no": 25,
+     "area": "문법",
+     "level": "하",
+     "answer": "⑤",
+     "point": "동명사 vs 현재분사"
+    },
+    {
+     "no": 26,
+     "area": "문법",
+     "level": "중",
+     "answer": "④",
+     "point": "분사구문 made→making"
+    },
+    {
+     "no": 27,
+     "area": "문법",
+     "level": "중",
+     "answer": "⑤",
+     "point": "get O p.p."
+    },
+    {
+     "no": 28,
+     "area": "문법",
+     "level": "중",
+     "answer": "①",
+     "point": "조건 부사절 시제"
+    },
+    {
+     "no": 29,
+     "area": "문법",
+     "level": "상",
+     "answer": "③",
+     "point": "관계대명사 which/that"
+    },
+    {
+     "no": 30,
+     "area": "문법",
+     "level": "상",
+     "answer": "②",
+     "point": "수일치"
+    },
+    {
+     "no": 31,
+     "area": "독해",
+     "level": "하",
+     "answer": "⑤",
+     "point": "글의 목적"
+    },
+    {
+     "no": 32,
+     "area": "독해",
+     "level": "하",
+     "answer": "⑤",
+     "point": "주제"
+    },
+    {
+     "no": 33,
+     "area": "독해",
+     "level": "하",
+     "answer": "⑤",
+     "point": "도표"
+    },
+    {
+     "no": 34,
+     "area": "독해",
+     "level": "하",
+     "answer": "④",
+     "point": "안내문"
+    },
+    {
+     "no": 35,
+     "area": "독해",
+     "level": "하",
+     "answer": "①",
+     "point": "분위기"
+    },
+    {
+     "no": 36,
+     "area": "독해",
+     "level": "하",
+     "answer": "②",
+     "point": "심경"
+    },
+    {
+     "no": 37,
+     "area": "독해",
+     "level": "하",
+     "answer": "①",
+     "point": "글의 목적"
+    },
+    {
+     "no": 38,
+     "area": "독해",
+     "level": "하",
+     "answer": "①",
+     "point": "제목"
+    },
+    {
+     "no": 39,
+     "area": "독해",
+     "level": "하",
+     "answer": "②",
+     "point": "빈칸(낱말)"
+    },
+    {
+     "no": 40,
+     "area": "독해",
+     "level": "하",
+     "answer": "⑤",
+     "point": "안내문"
+    },
+    {
+     "no": 41,
+     "area": "독해",
+     "level": "중",
+     "answer": "④",
+     "point": "내용 일치"
+    },
+    {
+     "no": 42,
+     "area": "독해",
+     "level": "중",
+     "answer": "②",
+     "point": "어휘 네모"
+    },
+    {
+     "no": 43,
+     "area": "독해",
+     "level": "중",
+     "answer": "⑤",
+     "point": "제목"
+    },
+    {
+     "no": 44,
+     "area": "독해",
+     "level": "중",
+     "answer": "③",
+     "point": "지칭"
+    },
+    {
+     "no": 45,
+     "area": "독해",
+     "level": "중",
+     "answer": "②",
+     "point": "빈칸(구)"
+    },
+    {
+     "no": 46,
+     "area": "독해",
+     "level": "중",
+     "answer": "③",
+     "point": "무관한 문장"
+    },
+    {
+     "no": 47,
+     "area": "독해",
+     "level": "중",
+     "answer": "③",
+     "point": "연결어"
+    },
+    {
+     "no": 48,
+     "area": "독해",
+     "level": "상",
+     "answer": "④",
+     "point": "글의 순서"
+    },
+    {
+     "no": 49,
+     "area": "독해",
+     "level": "상",
+     "answer": "④",
+     "point": "문장 삽입"
+    },
+    {
+     "no": 50,
+     "area": "독해",
+     "level": "상",
+     "answer": "②",
+     "point": "요약"
+    },
+    {
+     "no": 51,
+     "area": "서술형",
+     "level": "하",
+     "answer": "has lost",
+     "point": "현재완료(결과)"
+    },
+    {
+     "no": 52,
+     "area": "서술형",
+     "level": "하",
+     "answer": "herself",
+     "point": "재귀대명사"
+    },
+    {
+     "no": 53,
+     "area": "서술형",
+     "level": "하",
+     "answer": "Was / made",
+     "point": "의문문 수동태"
+    },
+    {
+     "no": 54,
+     "area": "서술형",
+     "level": "하",
+     "answer": "It",
+     "point": "가주어"
+    },
+    {
+     "no": 55,
+     "area": "서술형",
+     "level": "하",
+     "answer": "I'm looking forward to receiving your response.",
+     "point": "look forward to -ing"
+    },
+    {
+     "no": 56,
+     "area": "서술형",
+     "level": "중",
+     "answer": "I entering the room",
+     "point": "독립분사구문"
+    },
+    {
+     "no": 57,
+     "area": "서술형",
+     "level": "중",
+     "answer": "I have considered him as my true friend.",
+     "point": "consider O as C"
+    },
+    {
+     "no": 58,
+     "area": "서술형",
+     "level": "중",
+     "answer": "He was so young that he couldn't understand the novel.",
+     "point": "so ~ that"
+    },
+    {
+     "no": 59,
+     "area": "서술형",
+     "level": "상",
+     "answer": "isn't an actress (is not)",
+     "point": "as if 가정법 과거"
+    },
+    {
+     "no": 60,
+     "area": "서술형",
+     "level": "상",
+     "answer": "five times as many books as",
+     "point": "배수 as 원급 as"
+    }
+   ]
+  },
+  {
+   "area": "구문",
+   "items": "5문장, 문장마다 해석 1점 + 구문 1점 (총 10). 1단계 구문 4·5번 = 2단계 구문 1·2번"
+  }
+ ],
+ "scoring_assumed": "듣기 20, 문법 2점×10, 독해 2점×20, 서술형 1점×10, 구문 10 — 원본에 배점 없음, 임시 기준",
+ "unverified": [
+  "21번: 정답 have been fixing이 보기에 없음 (⑤로 처리)",
+  "32번: ①/⑤ 모호, ⑤로 처리",
+  "전체 정답이 Claude 풀이 기준 — 학원 정답지와 대조 필요"
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "test": "3단계 (HYPER Assessment)",
+ "status": "부분 정보 — 원본 PDF로 다시 정리 필요",
+ "known": [
+  {
+   "part": "Voca",
+   "nos": "1~20",
+   "answers": [
+    "significant",
+    "obvious",
+    "colleagues",
+    "operate",
+    "aspect",
+    "reflect",
+    "identify",
+    "relieve",
+    "constant",
+    "rated",
+    "blurred",
+    "chases",
+    "applause",
+    "awkward",
+    "exclaimed",
+    "accommodation",
+    "offensive",
+    "pledged",
+    "enroll",
+    "pleaded"
+   ],
+   "note": "문제지 첫 글자·해석으로 추정 포함 — 정답지와 대조"
+  },
+  {
+   "part": "수능기출",
+   "items": [
+    {
+     "no": 2,
+     "type": "어휘 네모(locust)",
+     "answer": "②"
+    },
+    {
+     "no": 3,
+     "type": "빈칸(Cabanac)",
+     "answer": "③"
+    },
+    {
+     "no": 4,
+     "type": "빈칸(Whitman)",
+     "answer": "④"
+    },
+    {
+     "no": 5,
+     "type": "문장 삽입(money)",
+     "answer": "미확인"
+    },
+    {
+     "no": 6,
+     "type": "빈칸(policymaking)",
+     "answer": "④"
+    }
+   ]
+  },
+  {
+   "part": "수능어법",
+   "items": [
+    {
+     "no": 3,
+     "topic": "salt",
+     "answer": "② little→a little"
+    },
+    {
+     "no": 5,
+     "topic": "rocket fins",
+     "answer": "④ far→farther"
+    }
+   ],
+   "note": "3단계 정답지의 2·3번 정답이 서로 뒤바뀐 것으로 보임"
+  }
+ ]
+}

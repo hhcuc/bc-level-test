@@ -1,0 +1,376 @@
+{
+ "test": "2단계",
+ "time_limit_min": 60,
+ "sections": [
+  {
+   "area": "어휘",
+   "points_each": 0.7,
+   "format": "빈칸(첫 글자 제시)",
+   "source": "3단계 Voca 1~20 중 10",
+   "items": [
+    {
+     "no": 1,
+     "level": "중",
+     "answer": "significant"
+    },
+    {
+     "no": 2,
+     "level": "중",
+     "answer": "obvious"
+    },
+    {
+     "no": 3,
+     "level": "중",
+     "answer": "operate"
+    },
+    {
+     "no": 4,
+     "level": "중",
+     "answer": "relieve"
+    },
+    {
+     "no": 5,
+     "level": "중",
+     "answer": "constant"
+    },
+    {
+     "no": 6,
+     "level": "중",
+     "answer": "blurred"
+    },
+    {
+     "no": 7,
+     "level": "중",
+     "answer": "applause"
+    },
+    {
+     "no": 8,
+     "level": "중",
+     "answer": "awkward"
+    },
+    {
+     "no": 9,
+     "level": "중",
+     "answer": "enroll"
+    },
+    {
+     "no": 10,
+     "level": "중",
+     "answer": "pleaded"
+    }
+   ]
+  },
+  {
+   "area": "구문",
+   "points_each": 3,
+   "format": "해석 2점 + 구문 표기 1점 (교사 채점)",
+   "items": [
+    {
+     "no": 1,
+     "level": "중",
+     "point": "as ~ as, 과거완료"
+    },
+    {
+     "no": 2,
+     "level": "중",
+     "point": "not A but B, to부정사 보어"
+    },
+    {
+     "no": 3,
+     "level": "중",
+     "point": "장소 부사구 도치, 분사 병렬"
+    },
+    {
+     "no": 4,
+     "level": "상",
+     "point": "It was not until ~ that 강조"
+    },
+    {
+     "no": 5,
+     "level": "상",
+     "point": "Had it not been for 가정법 도치"
+    },
+    {
+     "no": 6,
+     "level": "상",
+     "point": "the 비교급, 가주어, what절, less A than B"
+    }
+   ]
+  },
+  {
+   "area": "문법",
+   "points_by_level": {
+    "하": 1,
+    "중": 1.5,
+    "상": 2
+   },
+   "items": [
+    {
+     "no": 1,
+     "level": "하",
+     "answer": "⑤",
+     "point": "현재완료진행",
+     "source": "1단계 21"
+    },
+    {
+     "no": 2,
+     "level": "하",
+     "answer": "⑤",
+     "point": "강조 재귀대명사",
+     "source": "1단계 22"
+    },
+    {
+     "no": 3,
+     "level": "하",
+     "answer": "③",
+     "point": "사역동사 수동태",
+     "source": "1단계 23"
+    },
+    {
+     "no": 4,
+     "level": "하",
+     "answer": "③",
+     "point": "seem to부정사 전환",
+     "source": "1단계 24"
+    },
+    {
+     "no": 5,
+     "level": "하",
+     "answer": "⑤",
+     "point": "동명사 vs 현재분사",
+     "source": "1단계 25"
+    },
+    {
+     "no": 6,
+     "level": "하",
+     "answer": "herself",
+     "point": "재귀대명사 영작",
+     "source": "1단계 52"
+    },
+    {
+     "no": 7,
+     "level": "하",
+     "answer": "It",
+     "point": "가주어",
+     "source": "1단계 54"
+    },
+    {
+     "no": 8,
+     "level": "중",
+     "answer": "④",
+     "point": "분사구문",
+     "source": "1단계 26"
+    },
+    {
+     "no": 9,
+     "level": "중",
+     "answer": "⑤",
+     "point": "get O p.p.",
+     "source": "1단계 27"
+    },
+    {
+     "no": 10,
+     "level": "중",
+     "answer": "①",
+     "point": "조건 부사절 시제",
+     "source": "1단계 28"
+    },
+    {
+     "no": 11,
+     "level": "중",
+     "answer": "I entering",
+     "point": "독립분사구문 영작",
+     "source": "1단계 56"
+    },
+    {
+     "no": 12,
+     "level": "중",
+     "answer": "5형식",
+     "point": "consider O C 영작",
+     "source": "1단계 57"
+    },
+    {
+     "no": 13,
+     "level": "중",
+     "answer": "so~that",
+     "point": "so ~ that 영작",
+     "source": "1단계 58"
+    },
+    {
+     "no": 14,
+     "level": "상",
+     "answer": "③",
+     "point": "관계대명사 that/which",
+     "source": "1단계 29"
+    },
+    {
+     "no": 15,
+     "level": "상",
+     "answer": "②",
+     "point": "주어·동사 수일치",
+     "source": "1단계 30"
+    },
+    {
+     "no": 16,
+     "level": "상",
+     "answer": "5 times",
+     "point": "배수 비교 영작",
+     "source": "1단계 60"
+    },
+    {
+     "no": 17,
+     "level": "상",
+     "answer": "②",
+     "point": "수능어법 (a little)",
+     "source": "3단계 수능어법 3"
+    },
+    {
+     "no": 18,
+     "level": "상",
+     "answer": "④",
+     "point": "수능어법 (farther)",
+     "source": "3단계 수능어법 5"
+    },
+    {
+     "no": 19,
+     "level": "상",
+     "answer": "turned",
+     "point": "동사 자리",
+     "source": "3단계 기출 응용"
+    },
+    {
+     "no": 20,
+     "level": "상",
+     "answer": "unhurried",
+     "point": "보어 자리 형용사",
+     "source": "3단계 기출"
+    }
+   ]
+  },
+  {
+   "area": "독해",
+   "points_by_level": {
+    "하": 2,
+    "중": 3,
+    "상": 4
+   },
+   "items": [
+    {
+     "no": 1,
+     "level": "하",
+     "answer": "⑤",
+     "type": "도표",
+     "source": "1단계 33"
+    },
+    {
+     "no": 2,
+     "level": "하",
+     "answer": "④",
+     "type": "안내문 일치",
+     "source": "1단계 34"
+    },
+    {
+     "no": 3,
+     "level": "하",
+     "answer": "②",
+     "type": "심경",
+     "source": "1단계 36"
+    },
+    {
+     "no": 4,
+     "level": "하",
+     "answer": "①",
+     "type": "제목",
+     "source": "1단계 38"
+    },
+    {
+     "no": 5,
+     "level": "하",
+     "answer": "②",
+     "type": "빈칸(낱말)",
+     "source": "1단계 39"
+    },
+    {
+     "no": 6,
+     "level": "중",
+     "answer": "②",
+     "type": "어휘 네모",
+     "source": "1단계 42"
+    },
+    {
+     "no": 7,
+     "level": "중",
+     "answer": "⑤",
+     "type": "제목",
+     "source": "1단계 43"
+    },
+    {
+     "no": 8,
+     "level": "중",
+     "answer": "②",
+     "type": "빈칸(구)",
+     "source": "1단계 45"
+    },
+    {
+     "no": 9,
+     "level": "중",
+     "answer": "③",
+     "type": "무관한 문장",
+     "source": "1단계 46"
+    },
+    {
+     "no": 10,
+     "level": "중",
+     "answer": "③",
+     "type": "연결어",
+     "source": "1단계 47"
+    },
+    {
+     "no": 11,
+     "level": "상",
+     "answer": "④",
+     "type": "글의 순서",
+     "source": "1단계 48"
+    },
+    {
+     "no": 12,
+     "level": "상",
+     "answer": "④",
+     "type": "문장 삽입",
+     "source": "1단계 49"
+    },
+    {
+     "no": 13,
+     "level": "상",
+     "answer": "③",
+     "type": "빈칸 추론 · 수능기출",
+     "source": "3단계 3"
+    },
+    {
+     "no": 14,
+     "level": "상",
+     "answer": "②",
+     "type": "어휘 추론 · 수능기출",
+     "source": "3단계 2"
+    },
+    {
+     "no": 15,
+     "level": "상",
+     "answer": "④",
+     "type": "빈칸 추론 · 수능기출",
+     "source": "3단계 4"
+    }
+   ]
+  },
+  {
+   "area": "듣기(선택)",
+   "note": "1단계 듣기 1~5,7~11,16~17 사용. 정답·음원 미확보",
+   "items": []
+  }
+ ],
+ "notes": [
+  "독해 6번 정답 ② (2026-10-19 정정, 기존 ④ 오류)",
+  "문법 1번: 원본 1단계 21번 보기 오류를 ⑤ have been fixing으로 수정",
+  "문법 20번 정답 unhurried (3단계 정답지 unhurriedly는 오류로 판단)"
+ ]
+}

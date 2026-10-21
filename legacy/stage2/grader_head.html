@@ -1,0 +1,166 @@
+<title>2단계 레벨테스트 채점기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700;900&display=swap">
+<style>
+/* Layout: 왼쪽 채점 입력 / 오른쪽 상담 리포트(sticky). 좁으면 위아래로 쌓임 */
+:root{
+  --bg:#FBF6E9; --panel:#FFFFFF; --ink:#3E2A1E; --muted:#7A5E48; --line:#E8D7B4;
+  --butter:#F6E7B8; --wheat:#E3C38E; --walnut:#8A5A36; --cocoa:#4A3020;
+  --ok:#2F7A4B; --okbg:#E3F1E6; --no:#B4452F; --nobg:#F8E1DA; --warn:#9A6A00; --warnbg:#FFF0C7;
+  --serif:'Noto Serif KR',Georgia,serif; --sans:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1F1712; --panel:#2A2019; --ink:#F3E6CF; --muted:#C2A98C; --line:#4A3828;
+  --butter:#4A3A1C; --wheat:#7A5A2E; --walnut:#C98E5C; --cocoa:#E3C38E;
+  --ok:#7FD39B; --okbg:#1E3A28; --no:#F0957F; --nobg:#46241C; --warn:#F2C766; --warnbg:#3D3015; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1F1712; --panel:#2A2019; --ink:#F3E6CF; --muted:#C2A98C; --line:#4A3828;
+  --butter:#4A3A1C; --wheat:#7A5A2E; --walnut:#C98E5C; --cocoa:#E3C38E;
+  --ok:#7FD39B; --okbg:#1E3A28; --no:#F0957F; --nobg:#46241C; --warn:#F2C766; --warnbg:#3D3015; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.55}
+.wrap{max-width:1240px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:3px;color:var(--walnut)}
+h1{font-family:var(--serif);font-size:clamp(24px,4vw,34px);margin:4px 0 0;text-wrap:balance}
+h2{font-family:var(--serif);font-size:18px;margin:0}
+.tabs{display:flex;gap:6px}
+.tab{border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:6px 14px;font:700 13px var(--sans);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.info label{display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:700;color:var(--muted)}
+input[type=text],input[type=date]{font:500 14px var(--sans);color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 9px}
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.phead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.pscore{font-variant-numeric:tabular-nums;font-weight:700;color:var(--walnut)}
+.lvrow{display:flex;flex-direction:column;gap:6px}
+.lvlab{font-size:12px;font-weight:700;color:var(--muted)}
+.items{display:flex;flex-wrap:wrap;gap:6px}
+.it{min-width:58px;min-height:44px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:4px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font:500 12px var(--sans);line-height:1.25}
+.it b{font-size:14px}
+.it small{font-size:10.5px;color:var(--muted);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.it.o{background:var(--okbg);border-color:var(--ok)}
+.it.o b{color:var(--ok)}
+.it.x{background:var(--nobg);border-color:var(--no)}
+.it.x b{color:var(--no)}
+.it:focus-visible,.tab:focus-visible,.btn:focus-visible,.seg button:focus-visible{outline:2px solid var(--walnut);outline-offset:2px}
+.syn{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+.synitem{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+.synitem div{font-size:12px;color:var(--muted)}
+.seg{display:flex;gap:4px}
+.seg button{flex:1;min-height:36px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;font:700 13px var(--sans);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--walnut);border-color:var(--walnut);color:var(--panel)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1.5px solid var(--ink);background:var(--panel);color:var(--ink);border-radius:8px;padding:7px 12px;font:700 13px var(--sans);cursor:pointer;min-height:38px}
+.btn.dark{background:var(--ink);color:var(--bg)}
+.hint{font-size:12px;color:var(--muted)}
+.sample{font-size:12px;font-weight:700;background:var(--warnbg);color:var(--warn);border-radius:999px;padding:3px 10px}
+.report{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+.total{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.total .n{font-family:var(--serif);font-size:52px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:64px minmax(0,1fr) 72px;gap:8px;align-items:center;font-size:13px}
+.track{height:12px;background:var(--butter);border-radius:6px;overflow:hidden}
+.fill{height:100%;background:var(--walnut);border-radius:6px;transition:width .25s}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+.num{font-variant-numeric:tabular-nums;text-align:right;font-weight:700}
+.lvls{font-size:11.5px;color:var(--muted);grid-column:2/4}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:700}
+.stepchip{display:inline-block;font-weight:900;font-size:12px;border-radius:6px;padding:2px 8px}
+.s1{background:#F6E7B8;color:#3E2A1E}.s2{background:#E3C38E;color:#3E2A1E}.s3{background:#8A5A36;color:#FFFFFF}.s4{background:#4A3020;color:#F6E7B8}
+.m3{border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;border:1.5px solid var(--line)}
+.m3 .verdict{font-weight:900;font-size:15px}
+.m3.go{background:var(--okbg);border-color:var(--ok)}.m3.go .verdict{color:var(--ok)}
+.m3.hold{background:var(--warnbg);border-color:var(--warn)}.m3.hold .verdict{color:var(--warn)}
+.m3.no{background:var(--nobg);border-color:var(--no)}.m3.no .verdict{color:var(--no)}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;font-size:12.5px}
+.checks li::before{content:attr(data-m);display:inline-block;width:18px;font-weight:900}
+.comment{white-space:pre-wrap;background:var(--bg);border:1px dashed var(--wheat);border-radius:10px;padding:10px 12px;font-size:13px}
+.tablebox{overflow-x:auto}
+.lvchip{display:inline-block;font-size:11px;font-weight:700;background:var(--butter);color:var(--ink);border-radius:6px;padding:1px 7px;margin-top:3px;white-space:nowrap}
+.capturing{position:static!important}.capturing .noexport{display:none!important}
+.exp{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);padding-top:12px}
+#printArea{display:none}
+@media print{.wrap{display:none!important}#printArea{display:block!important}body{background:#fff!important}}
+@page{size:A4;margin:0}
+.mapgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">BRYAN CHU EDUCATION · 중등부 무학년제</div>
+      <h1>2단계 레벨테스트 채점·상담</h1>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-grade" aria-selected="true">채점·리포트</button>
+      <button class="tab" role="tab" id="tab-map" aria-selected="false">문항 분석표</button>
+    </div>
+  </header>
+
+  <section id="view-grade" class="grid">
+    <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+      <div class="card">
+        <div class="phead"><h2>학생 정보</h2><span id="sampleTag" class="sample">예시 학생 데이터</span></div>
+        <div class="info">
+          <label for="sName">이름<input type="text" id="sName"></label>
+          <label for="sSchool">학교 / 학년<input type="text" id="sSchool"></label>
+          <label for="sDate">응시일<input type="date" id="sDate"></label>
+        </div>
+        <div class="tools">
+          <button class="btn" id="btnAllO">정답 일괄 O</button>
+          <button class="btn" id="btnReset">새 학생 (초기화)</button>
+          <button class="btn" id="btnSample">예시 다시 불러오기</button>
+          <span class="hint">문항을 누르면 미채점 → O → X 순서로 바뀝니다. 칸 아래 작은 글씨가 정답입니다.</span>
+        </div>
+      </div>
+      <div id="parts" style="display:flex;flex-direction:column;gap:16px"></div>
+    </div>
+
+    <aside class="card report" aria-live="polite">
+      <div class="phead"><h2 id="rTitle">상담 리포트</h2><span class="hint" id="rMeta"></span></div>
+      <div class="total"><span class="n" id="tot">0</span><span>/ 100점</span><span class="hint" id="tLisn"></span></div>
+      <div class="bars" id="bars"></div>
+      <div class="tablebox"><table>
+        <thead><tr><th>영역</th><th>추천 단계</th><th>연결 교재</th><th>난이도 (범위 · 추정)</th></tr></thead>
+        <tbody id="recs"></tbody>
+      </table></div>
+      <div id="m3" class="m3"></div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div class="phead"><h2>상담 코멘트</h2><button class="btn dark noexport" id="btnCopy">코멘트 복사</button></div>
+        <div class="comment" id="comment"></div>
+      </div>
+      <div class="exp noexport">
+        <button class="btn dark" id="exPdf">PDF 저장 (A4)</button>
+        <button class="btn" id="exPng">PNG 저장 (9:16)</button>
+        <button class="btn" id="exCopy">이미지 복사</button>
+        <button class="btn" id="exShare" hidden>공유하기</button>
+        <button class="btn dark" id="exLink">학부모 링크 복사</button>
+        <button class="btn" id="exPrint" hidden>인쇄 (A4)</button>
+        <span class="hint" id="exMsg">PNG는 휴대폰 화면(1080×1920), PDF는 A4 한 장으로 저장됩니다.</span>
+        <input type="text" id="linkOut" readonly hidden aria-label="학부모 링크" style="width:100%">
+      </div>
+    </aside>
+  </section>
+
+  <section id="view-map" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <h2>시험 구조와 커리큘럼 연결</h2>
+      <div class="mapgrid">
+        <div><b>어휘 10문항 · 7점</b><div class="hint">3단계 원본 예문 빈칸(첫 글자 제시). 정답 수로 단어장을 정합니다: 0~3 중등실력, 4~5 중고난도, 6~7 고등베이직, 8~9 수능2000, 10 고등Complete. EBS 파이널·하이스트는 3단계 결과로 판단합니다.</div></div>
+        <div><b>구문 6문항 · 18점</b><div class="hint">1~3번(중) 비교·not A but B·도치, 4~6번(상) 강조구문·가정법 도치·복합 명사절. 상 점수로 Intermediate와 Advanced를 가릅니다.</div></div>
+        <div><b>문법 20문항 · 30점</b><div class="hint">하 7(중2 문법 범위), 중 6(중3 분사·영작), 상 7(관계사·수일치·수능어법 4). 17~20번이 수능어법반 진입 신호입니다.</div></div>
+        <div><b>독해 15문항 · 45점</b><div class="hint">하 5(중2 유형), 중 5(중3·고1 유형), 상 5(순서·삽입·수능기출 3). 13~15번 수능기출이 M-3 하이퍼 판단의 핵심 문항입니다.</div></div>
+      </div>
+      <div class="hint">단계 판정 기준: 영역별 가중 정답률 50% 미만 STEP 1, 70% 미만 STEP 2, 85% 미만 STEP 3, 85% 이상 STEP 4. 단 STEP 3은 상 문항 40% 이상, STEP 4는 상 문항 80% 이상일 때만 부여합니다.</div>
+    </div>
+    <div class="card"><h2>문법 문항표</h2><div class="tablebox"><table><thead><tr><th>번호</th><th>난도</th><th>정답</th><th>평가 포인트</th><th>출처</th></tr></thead><tbody id="mapG"></tbody></table></div></div>
+    <div class="card"><h2>독해 문항표</h2><div class="tablebox"><table><thead><tr><th>번호</th><th>난도</th><th>정답</th><th>유형</th><th>출처</th></tr></thead><tbody id="mapR"></tbody></table></div></div>
+    <div class="card"><h2>구문 문항표</h2><div class="tablebox"><table><thead><tr><th>번호</th><th>난도</th><th>핵심 구문</th></tr></thead><tbody id="mapS"></tbody></table></div></div>
+  </section>
+</div>
+<div id="printArea"></div>
+

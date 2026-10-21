@@ -1,0 +1,87 @@
+[
+ {
+  "part": "00_안내",
+  "start_sec": 0,
+  "end_sec": 198
+ },
+ {
+  "part": "01",
+  "start_sec": 198,
+  "end_sec": 236
+ },
+ {
+  "part": "02",
+  "start_sec": 236,
+  "end_sec": 279
+ },
+ {
+  "part": "03",
+  "start_sec": 279,
+  "end_sec": 345
+ },
+ {
+  "part": "04",
+  "start_sec": 345,
+  "end_sec": 418
+ },
+ {
+  "part": "05",
+  "start_sec": 418,
+  "end_sec": 498
+ },
+ {
+  "part": "06",
+  "start_sec": 498,
+  "end_sec": 573
+ },
+ {
+  "part": "07",
+  "start_sec": 573,
+  "end_sec": 648
+ },
+ {
+  "part": "08",
+  "start_sec": 648,
+  "end_sec": 726
+ },
+ {
+  "part": "09",
+  "start_sec": 726,
+  "end_sec": 802
+ },
+ {
+  "part": "10",
+  "start_sec": 802,
+  "end_sec": 883
+ },
+ {
+  "part": "11",
+  "start_sec": 883,
+  "end_sec": 960
+ },
+ {
+  "part": "12",
+  "start_sec": 960,
+  "end_sec": 1034
+ },
+ {
+  "part": "13",
+  "start_sec": 1034,
+  "end_sec": 1110
+ },
+ {
+  "part": "14",
+  "start_sec": 1110,
+  "end_sec": 1185
+ },
+ {
+  "part": "15",
+  "start_sec": 1185,
+  "end_sec": 1261
+ },
+ {
+  "part": "16-17_세트",
+  "start_sec": 1261,
+  "end_sec": 1464.8
+ }
+]
